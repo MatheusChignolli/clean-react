@@ -1,0 +1,116 @@
+@import '../../styles/colors'
+
+* 
+  font-family: 'Roboto', sans-serif
+  font-size: 14px
+  padding: 0
+  margin: 0
+  box-sizing: border-box
+
+body
+  background-color: $background
+
+input[type="password"],
+input[type="email"]
+  border: 1px solid $primaryLight
+  line-height: 40px
+  border-radius: 4px
+  padding: 0 40px 0 8px
+
+  &:focus
+    outline-color: $primaryLight 
+
+button
+  background-color: $primary
+  line-height: 60px
+  color: $white
+  border-radius: 8px
+  font-size: 16px
+  border: none
+  transition: .25s
+
+  &:hover
+    opacity: .9
+
+.login
+  display: flex
+  flex-direction: column
+  height: 100vh
+  justify-content: space-between
+
+  .header
+    align-items: center
+    background-color: $primary
+    display: flex
+    border-top: 40px solid $primaryDark
+    flex-direction: column
+
+    img
+      margin-top: 40px
+
+    h1
+      color: $white
+      margin: 16px 0 40px  
+  
+  .form
+    align-self: center
+    background-color: $white
+    border-radius: 8px
+    display: flex
+    flex-direction: column
+    padding: 40px
+    width: 400px
+
+    h2
+      color: $primaryDark
+      font-size: 20px
+      text-align: center
+      text-transform: uppercase
+
+    .inputWrap
+      align-items: center
+      display: flex
+      flex-direction: row
+      margin-top: 16px
+      position: relative
+
+      input
+        flex-grow: 1
+
+      .status
+        background-color: red
+        border-radius: 100%
+        cursor: help
+        position: absolute
+        right: 8px
+        height: 15px
+        width: 15px
+    
+    .submit
+      margin-top: 32px
+
+    .link
+      color: $primary
+      cursor: pointer
+      margin-top: 16px
+      text-align: center
+      text-transform: lowercase
+
+      &:hover
+        text-decoration: underline
+    
+    .errorWrap
+      align-items: center
+      display: flex
+      flex-direction: column
+      
+      .spinner
+        margin-top: 32px
+
+      .error
+        color: $primary
+        margin-top: 32px
+
+  .footer
+    background-color: $primary
+    height: 80px
