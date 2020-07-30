@@ -1,6 +1,6 @@
 import React, { memo } from 'react'
 import Styles from './styles.sass'
-import Logo from '@/presentation/components/Logo'
+import { Logo } from '@/presentation/components'
 
 const LoginHeader: React.FC = () => {
   return (
