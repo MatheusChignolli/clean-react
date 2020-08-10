@@ -1,27 +1,34 @@
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Styles from './styles.sass'
 import { FormStatus, Footer, Input, LoginHeader } from '@/presentation/components'
 import { FormContext } from '@/presentation/context'
+import { Validation } from '@/presentation/protocols/validation'
 
-const Login: React.FC = () => {
-  const [state] = useState({
-    isLoading: false
+type Props = {
+  validation: Validation
+}
+
+const Login: React.FC<Props> = ({ validation }: Props) => {
+  const [state, setState] = useState({
+    isLoading: false,
+    email: 'any_email',
+    emailError: 'Campo Obrigatório',
+    passwordError: 'Campo Obrigatório',
+    mainError: ''
   })
 
-  const [errorState] = useState({
-    email: 'Campo Obrigatório',
-    password: 'Campo Obrigatório',
-    main: ''
-  })
+  useEffect(() => {
+    typeof validation !== 'undefined' && validation.validate({ email: state.email })
+  }, [state.email])
 
   return (
     <div className={Styles.login}>
       <LoginHeader/>
-      <FormContext.Provider value={ { state, errorState } }>
+      <FormContext.Provider value={ { state, setState } }>
         <form className={Styles.form}>
           <h2>Login</h2>
-          <Input data-testid="email" type="email" name="email" title={errorState.email} placeholder="Digite seu e-mail"/>
-          <Input data-testid="password" type="password" name="password" title={errorState.password} placeholder="Digiste sua senha"/>
+          <Input data-testid="email" type="email" name="email" title={state.emailError} placeholder="Digite seu e-mail"/>
+          <Input data-testid="password" type="password" name="password" title={state.passwordError} placeholder="Digiste sua senha"/>
           <button data-testid="submit" disabled className={Styles.submit} type="submit">Entrar</button>
           <span className={Styles.link}>Criar conta</span>
           <FormStatus/>
