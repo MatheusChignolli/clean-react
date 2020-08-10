@@ -1,14 +1,25 @@
 import React from 'react'
-import { render } from '@testing-library/react'
+import { render, RenderResult } from '@testing-library/react'
 import Login from '../Login'
 
-const { getByTestId } = render(<Login />)
+type SutTypes = {
+  sut: RenderResult
+}
 
-const errorWrap = getByTestId('error-wrap')
-const submitButon = getByTestId('submit') as HTMLButtonElement
-const emailStatus = getByTestId('email')
-const passwordStatus = getByTestId('password')
-const inputStatus = getByTestId('email-status')
+const makeSut = (): SutTypes => {
+  const sut = render(<Login />)
+  return {
+    sut
+  }
+}
+
+const { sut } = makeSut()
+
+const errorWrap = sut.getByTestId('error-wrap')
+const submitButon = sut.getByTestId('submit') as HTMLButtonElement
+const emailStatus = sut.getByTestId('email')
+const passwordStatus = sut.getByTestId('password')
+const inputStatus = sut.getByTestId('email-status')
 
 describe('Login Component', () => {
   test('Should not render spinner and error on start', () => {
