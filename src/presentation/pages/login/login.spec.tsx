@@ -56,9 +56,4 @@ describe('Login Component', () => {
     fireEvent.change(emailInput, { target: { value: 'any_email' } })
     expect(validationSpy.input).toEqual({ email: 'any_email' })
   })
-
-  test('Should call validation with correct email', () => {
-    fireEvent.change(passwordInput, { target: { value: 'any_password' } })
-    expect(validationSpy.input).toEqual({ email: 'any_email' })
-  })
 })
