@@ -1,27 +1,43 @@
 import React from 'react'
-import { render, RenderResult } from '@testing-library/react'
+import { render, RenderResult, fireEvent, cleanup } from '@testing-library/react'
+import { Validation } from '@/presentation/protocols/validation'
 import Login from '../Login'
 
 type SutTypes = {
   sut: RenderResult
+  validationSpy: ValidationSpy
 }
 
-const makeSut = (): SutTypes => {
-  const sut = render(<Login />)
-  return {
-    sut
+class ValidationSpy implements Validation {
+  errorMessage: string
+  input: object
+
+  validate (input: object): string {
+    this.input = input
+    return this.errorMessage
   }
 }
 
-const { sut } = makeSut()
+const makeSut = (): SutTypes => {
+  const validationSpy = new ValidationSpy()
+  const sut = render(<Login validation={validationSpy} />)
+  return {
+    sut,
+    validationSpy
+  }
+}
+
+const { sut, validationSpy } = makeSut()
 
 const errorWrap = sut.getByTestId('error-wrap')
 const submitButon = sut.getByTestId('submit') as HTMLButtonElement
-const emailStatus = sut.getByTestId('email')
-const passwordStatus = sut.getByTestId('password')
-const inputStatus = sut.getByTestId('email-status')
+const emailInput = sut.getByTestId('email')
+const passwordInput = sut.getByTestId('password')
+const inputStatus = sut.getByTestId('status-email')
 
 describe('Login Component', () => {
+  afterEach(cleanup)
+
   test('Should not render spinner and error on start', () => {
     expect(errorWrap.childElementCount).toBe(0)
   })
@@ -31,8 +47,18 @@ describe('Login Component', () => {
   })
 
   test('Should ensure inputs are required', () => {
-    expect(emailStatus.title).toBe('Campo Obrigatório')
+    expect(emailInput.title).toBe('Campo Obrigatório')
     expect(inputStatus.className).toBe('status')
-    expect(passwordStatus.title).toBe('Campo Obrigatório')
+    expect(passwordInput.title).toBe('Campo Obrigatório')
+  })
+
+  test('Should call validation with correct value', () => {
+    fireEvent.change(emailInput, { target: { value: 'any_email' } })
+    expect(validationSpy.input).toEqual({ email: 'any_email' })
+  })
+
+  test('Should call validation with correct email', () => {
+    fireEvent.change(passwordInput, { target: { value: 'any_password' } })
+    expect(validationSpy.input).toEqual({ email: 'any_email' })
   })
 })
