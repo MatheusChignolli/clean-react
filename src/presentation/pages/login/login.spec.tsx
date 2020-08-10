@@ -52,8 +52,9 @@ describe('Login Component', () => {
     expect(passwordInput.title).toBe('Campo Obrigatório')
   })
 
-  test('Should call validation with correct value', () => {
+  test('Should call validation with correct values', () => {
     fireEvent.change(emailInput, { target: { value: 'any_email' } })
-    expect(validationSpy.input).toEqual({ email: 'any_email' })
+    fireEvent.change(passwordInput, { target: { value: 'any_password' } })
+    expect(validationSpy.input).toEqual({ email: 'any_email', password: 'any_password' })
   })
 })

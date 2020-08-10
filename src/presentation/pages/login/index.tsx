@@ -12,14 +12,15 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
     email: 'any_email',
+    password: 'any_password',
     emailError: 'Campo Obrigatório',
     passwordError: 'Campo Obrigatório',
     mainError: ''
   })
 
   useEffect(() => {
-    typeof validation !== 'undefined' && validation.validate({ email: state.email })
-  }, [state.email])
+    typeof validation !== 'undefined' && validation.validate({ email: state.email, password: state.password })
+  }, [state.email, state.password])
 
   return (
     <div className={Styles.login}>
@@ -27,8 +28,8 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
       <FormContext.Provider value={ { state, setState } }>
         <form className={Styles.form}>
           <h2>Login</h2>
-          <Input data-testid="email" type="email" name="email" title={state.emailError} placeholder="Digite seu e-mail"/>
-          <Input data-testid="password" type="password" name="password" title={state.passwordError} placeholder="Digiste sua senha"/>
+          <Input type="email" name="email" title={state.emailError} placeholder="Digite seu e-mail"/>
+          <Input type="password" name="password" title={state.passwordError} placeholder="Digiste sua senha"/>
           <button data-testid="submit" disabled className={Styles.submit} type="submit">Entrar</button>
           <span className={Styles.link}>Criar conta</span>
           <FormStatus/>
