@@ -19,8 +19,12 @@ const Login: React.FC<Props> = ({ validation }: Props) => {
   })
 
   useEffect(() => {
-    typeof validation !== 'undefined' && validation.validate({ email: state.email, password: state.password })
-  }, [state.email, state.password])
+    typeof validation !== 'undefined' && validation.validate('email', state.email)
+  }, [state.email])
+
+  useEffect(() => {
+    typeof validation !== 'undefined' && validation.validate('password', state.password)
+  }, [state.password])
 
   return (
     <div className={Styles.login}>
