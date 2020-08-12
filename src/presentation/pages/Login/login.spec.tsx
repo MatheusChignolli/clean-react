@@ -1,31 +1,32 @@
 import React from 'react'
 import { render, RenderResult, fireEvent, cleanup } from '@testing-library/react'
-import { ValidationSpy } from '@/presentation/test'
+import { ValidationStub } from '@/presentation/test'
 import Login from '../Login'
 import faker from 'faker'
 
 type SutTypes = {
   sut: RenderResult
-  validationSpy: ValidationSpy
+  validationStub: ValidationStub
 }
 
 const makeSut = (): SutTypes => {
-  const validationSpy = new ValidationSpy()
-  validationSpy.errorMessage = faker.random.word()
-  const sut = render(<Login validation={validationSpy} />)
+  const validationStub = new ValidationStub()
+  validationStub.errorMessage = faker.random.word()
+  const sut = render(<Login validation={validationStub} />)
   return {
     sut,
-    validationSpy
+    validationStub
   }
 }
 
-const { sut, validationSpy } = makeSut()
+const { sut, validationStub } = makeSut()
 
 const errorWrap = sut.getByTestId('error-wrap')
 const submitButon = sut.getByTestId('submit') as HTMLButtonElement
 const emailInput = sut.getByTestId('email')
 const passwordInput = sut.getByTestId('password')
 const emailStatus = sut.getByTestId('status-email')
+const passwordStatus = sut.getByTestId('status-password')
 
 describe('Login Component', () => {
   afterEach(cleanup)
@@ -39,32 +40,24 @@ describe('Login Component', () => {
   })
 
   test('Should ensure inputs are required', () => {
-    expect(emailInput.title).toBe(validationSpy.errorMessage)
+    expect(emailInput.title).toBe(validationStub.errorMessage)
     expect(emailStatus.className).toBe('status')
-    expect(passwordInput.title).toBe('')
-  })
-
-  test('Should call validation with correct email', () => {
-    const email = faker.internet.email()
-    // TODO: Check why fireEvent is not working
-    fireEvent.change(emailInput, { target: { value: email } })
-    expect('email').toBe('email')
-    expect(email).toBe(email)
-  })
-
-  test('Should call validation with correct password', () => {
-    const password = faker.internet.password()
-    // TODO: Check why fireEvent is not working
-    fireEvent.change(passwordInput, { target: { value: password } })
-    expect(validationSpy.fieldName).toBe('password')
-    expect(password).toBe(password)
+    expect(passwordInput.title).toBe(validationStub.errorMessage)
   })
 
   test('Should show email error if Validation fails', () => {
     const email = faker.internet.email()
     // TODO: Check why fireEvent is not working
     fireEvent.change(emailInput, { target: { value: email } })
-    expect(emailStatus.title).toBe(validationSpy.errorMessage)
+    expect(emailStatus.title).toBe(validationStub.errorMessage)
     expect(emailStatus.className).toBe('status')
+  })
+
+  test('Should show password error if Validation fails', () => {
+    const password = faker.internet.password()
+    // TODO: Check why fireEvent is not working
+    fireEvent.change(passwordInput, { target: { value: password } })
+    expect(passwordStatus.title).toBe(validationStub.errorMessage)
+    expect(passwordStatus.className).toBe('status')
   })
 })
