@@ -11,8 +11,8 @@ type Props = {
 const Login: React.FC<Props> = ({ validation }: Props) => {
   const [state, setState] = useState({
     isLoading: false,
-    email: 'any_email',
-    password: 'any_password',
+    email: '',
+    password: '',
     emailError: '',
     passwordError: '',
     mainError: ''

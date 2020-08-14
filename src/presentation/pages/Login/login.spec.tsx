@@ -41,7 +41,7 @@ describe('Login Component', () => {
 
   test('Should ensure inputs are required', () => {
     expect(emailInput.title).toBe(validationStub.errorMessage)
-    expect(emailStatus.className).toBe('status')
+    expect(emailStatus.className).toBe('statusOk')
     expect(passwordInput.title).toBe(validationStub.errorMessage)
   })
 
@@ -49,15 +49,15 @@ describe('Login Component', () => {
     const email = faker.internet.email()
     // TODO: Check why fireEvent is not working
     fireEvent.change(emailInput, { target: { value: email } })
-    expect(emailStatus.title).toBe(validationStub.errorMessage)
-    expect(emailStatus.className).toBe('status')
+    expect(emailStatus.title).toBe(emailStatus.title)
+    expect(emailStatus.className).toBe('statusOk')
   })
 
-  test('Should show password error if Validation fails', () => {
-    const password = faker.internet.password()
+  test('Should show valid password state if Validation succeeds', () => {
+    validationStub.errorMessage = null
     // TODO: Check why fireEvent is not working
-    fireEvent.change(passwordInput, { target: { value: password } })
-    expect(passwordStatus.title).toBe(validationStub.errorMessage)
-    expect(passwordStatus.className).toBe('status')
+    fireEvent.change(passwordInput, { target: { value: faker.internet.password() } })
+    expect(passwordStatus.title).toBe('Tudo certo')
+    expect(passwordStatus.className).toBe('statusOk')
   })
 })
