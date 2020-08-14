@@ -53,6 +53,14 @@ describe('Login Component', () => {
     expect(emailStatus.className).toBe('statusOk')
   })
 
+  test('Should show valid email state if Validation succeeds', () => {
+    validationStub.errorMessage = null
+    // TODO: Check why fireEvent is not working
+    fireEvent.change(emailInput, { target: { value: faker.internet.email() } })
+    expect(emailStatus.title).toBe('Tudo certo')
+    expect(emailStatus.className).toBe('statusOk')
+  })
+
   test('Should show valid password state if Validation succeeds', () => {
     validationStub.errorMessage = null
     // TODO: Check why fireEvent is not working
